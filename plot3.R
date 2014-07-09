@@ -1,0 +1,15 @@
+plot3 <- function()
+{
+datatable<-read.csv(file="household_power_consumption.txt",sep=";")
+datatable$Date <- as.Date(datatable$Date,'%d/%m/%Y')
+dt<-subset(datatable,datatable$Date >= as.Date("02/01/2007",'%m/%d/%Y') & datatable$Date < as.Date("02/03/2007",'%m/%d/%Y'))
+#dt$Time<-as.Date(dt$Time,'%H:%M:%S')
+dt$fullDate<-paste(format(dt$Date,'%m/%d/%Y'), as.character(dt$Time), sep=" ")
+dt$timeStamp<-strptime(dt$fullDate, "%m/%d/%Y %H:%M:%OS") 
+plot(y=dt$Sub_metering_1,x=dt$timeStamp,type="l",ylab="Energy Sub Metering", xlab=" ")
+lines(dt$timeStamp,dt$Sub_metering_2,type="l",col="red")
+lines(dt$timeStamp,dt$Sub_metering_3,type="l",col="blue")
+legend("topright",inset = 0.06,cex=0.9,box.lwd = 0,legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lwd=c(1,1,1),lty=c(1,1,1), xjust=0,col=c("black","red","blue"))
+dev.copy(png,file="plot3.png")
+dev.off()
+}
